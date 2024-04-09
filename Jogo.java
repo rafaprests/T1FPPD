@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.List;
 
 public class Jogo extends JFrame implements KeyListener {
     private JLabel statusBar;
@@ -86,6 +87,19 @@ public class Jogo extends JFrame implements KeyListener {
 
         // Adiciona o listener para eventos de teclado
         addKeyListener(this);
+
+        // Inicializa as threads dos inimigos
+        iniciarThreadsInimigos();
+    }
+
+    // Método para iniciar as threads dos inimigos
+    private void iniciarThreadsInimigos() {
+        List<Inimigo> inimigos = mapa.getInimigos();
+
+        for (Inimigo inimigo : inimigos) {
+            ThreadInimigo threadInimigo = new ThreadInimigo(inimigo, mapa);
+            threadInimigo.start();
+        }
     }
 
     public void move(Direcao direcao) {
@@ -136,7 +150,8 @@ public class Jogo extends JFrame implements KeyListener {
                 if (mapa.estaRevelado(j, i)) {
                     ElementoMapa elemento = mapa.getElemento(j, i);
                     if (elemento != null) {
-                        //System.out.println("Elemento: " + elemento.getSimbolo() + " " + elemento.getCor());
+                        // System.out.println("Elemento: " + elemento.getSimbolo() + " " +
+                        // elemento.getCor());
                         g.setColor(elemento.getCor());
                         g.drawString(elemento.getSimbolo().toString(), posX, posY);
                     }
@@ -190,9 +205,14 @@ public class Jogo extends JFrame implements KeyListener {
         // Não necessário
     }
 
+    public Mapa getMapa() {
+        return mapa;
+    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new Jogo("mapa.txt").setVisible(true);
+            Jogo jogo = new Jogo("mapa.txt");
+            jogo.setVisible(true);
         });
     }
 }

@@ -10,6 +10,7 @@ import java.util.Map;
 public class Mapa {
     private List<String> mapa;
     private Map<Character, ElementoMapa> elementos;
+    private List<Inimigo> inimigos;
     private int x = 50; // Posição inicial X do personagem
     private int y = 50; // Posição inicial Y do personagem
     private final int TAMANHO_CELULA = 10; // Tamanho de cada célula do mapa
@@ -18,16 +19,19 @@ public class Mapa {
     private final Color vegetationColor = new Color(34, 139, 34); // Cor verde para vegetação
     private final Color redColor = new Color(225, 0, 0); // Cor verde para vegetação
     private final int RAIO_VISAO = 5; // Raio de visão do personagem
+    private final int RAIO_MORTE = 2; 
     private int vidaPersonagem;
 
     public Mapa(String arquivoMapa) {
         mapa = new ArrayList<>();
         elementos = new HashMap<>();
+        inimigos = new ArrayList<>();
         registraElementos();
         carregaMapa(arquivoMapa);
         this.vidaPersonagem = 3;
         areaRevelada = new boolean[mapa.size() + 1000][mapa.get(0).length() + 1000];
         atualizaCelulasReveladas();
+        inicializaInimigos();
     }
 
     public int getX() {
@@ -53,6 +57,10 @@ public class Mapa {
     public ElementoMapa getElemento(int x, int y) {
         Character id = mapa.get(y).charAt(x);
         return elementos.get(id);
+    }
+
+    public List<Inimigo> getInimigos(){
+        return inimigos;
     }
 
     public boolean estaRevelado(int x, int y) {
@@ -129,10 +137,10 @@ public class Mapa {
             return "N.A. mapa";
 
         // Itera sobre as células próximas ao personagem
-        for (int i = Math.max(0, y / TAMANHO_CELULA - RAIO_VISAO); i < Math.min(mapa.size(),
-                y / TAMANHO_CELULA + RAIO_VISAO + 1); i++) {
-            for (int j = Math.max(0, x / TAMANHO_CELULA - RAIO_VISAO); j < Math.min(mapa.get(i).length(),
-                    x / TAMANHO_CELULA + RAIO_VISAO + 1); j++) {
+        for (int i = Math.max(0, y / TAMANHO_CELULA - RAIO_MORTE); i < Math.min(mapa.size(),
+                y / TAMANHO_CELULA + RAIO_MORTE); i++) {
+            for (int j = Math.max(0, x / TAMANHO_CELULA - RAIO_MORTE); j < Math.min(mapa.get(i).length(),
+                    x / TAMANHO_CELULA + RAIO_MORTE); j++) {
                 char id;
 
                 try {
@@ -173,6 +181,20 @@ public class Mapa {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    //inicializacao dos inimigos
+    private void inicializaInimigos() {
+        for (int i = 0; i < mapa.size(); i++) {
+            String linha = mapa.get(i);
+            for (int j = 0; j < linha.length(); j++) {
+                char id = linha.charAt(j);
+                if (id == 'W') { // 'W' representa um inimigo
+                    // Adiciona um novo inimigo à lista de inimigos
+                    inimigos.add(new Inimigo('O', redColor));
+                }
+            }
         }
     }
 

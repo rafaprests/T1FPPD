@@ -11,8 +11,7 @@ public class ThreadInimigo extends Thread {
     public void run() {
         while (true) {
             // Adicione aqui a lógica para o comportamento do inimigo
-            // Por exemplo, você pode fazer o inimigo se mover aleatoriamente ou atacar em intervalos regulares
-            try {
+            System.out.print("thread de algum inimigo por aqui....");            try {
                 Thread.sleep(1000); // Por exemplo, aguarda 1 segundo entre cada ação do inimigo
             } catch (InterruptedException e) {
                 e.printStackTrace();
