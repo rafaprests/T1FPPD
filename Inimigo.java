@@ -4,11 +4,29 @@ public class Inimigo implements ElementoMapa {
     private Color cor;
     private Character simbolo;
     private int vida;
+    private int x;
+    private int y;
 
     public Inimigo(Character simbolo, Color cor) {
         this.simbolo = simbolo;
         this.cor = cor;
         this.vida = 1;
+    }
+    
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
     
     public Character getSimbolo() {
@@ -41,7 +59,7 @@ public class Inimigo implements ElementoMapa {
         // Verifica se o personagem está na mesma célula do inimigo
         if (posXPers % tamanhoCelula == 0 && posYPers % tamanhoCelula == 0) {
             // O personagem está na mesma célula que o inimigo, realiza o ataque
-            mapa.reduzirVidaPersonagem(1);
+            mapa.reduzVidaPersonagem(1);
             return "O inimigo atacou o personagem!";
         } else {
             // O personagem não está na mesma célula que o inimigo

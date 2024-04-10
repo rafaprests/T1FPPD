@@ -192,7 +192,10 @@ public class Mapa {
                 char id = linha.charAt(j);
                 if (id == 'W') { // 'W' representa um inimigo
                     // Adiciona um novo inimigo à lista de inimigos
-                    inimigos.add(new Inimigo('O', redColor));
+                    Inimigo novoInimigo = new Inimigo('O', redColor);
+                    novoInimigo.setX(j * TAMANHO_CELULA);
+                    novoInimigo.setY(i * TAMANHO_CELULA);
+                    inimigos.add(novoInimigo);
                 }
             }
         }
@@ -221,12 +224,27 @@ public class Mapa {
         elementos.put('W', new Inimigo('O', redColor));
     }
 
-    public void reduzirVidaPersonagem(int quantidade) {
+    public void reduzVidaPersonagem(int quantidade) {
         this.vidaPersonagem -= quantidade;
         if (this.vidaPersonagem <= 0) {
             // Aqui você pode adicionar lógica para tratar o fim do jogo, como exibir uma
             // mensagem de "Game Over"
             System.out.println("Game Over - Personagem morreu!");
         }
+    }
+    public boolean personagemPertoInimigo() {
+        for (Inimigo inimigo : inimigos) {
+            int distanciaX = Math.abs(x - inimigo.getX());
+            int distanciaY = Math.abs(y - inimigo.getY());
+
+            // Calcula a distância entre o personagem e o inimigo usando o teorema de Pitágoras
+            double distancia = Math.sqrt(Math.pow(distanciaX, 2) + Math.pow(distanciaY, 2));
+
+            // Verifica se a distância é menor ou igual ao raio de visão
+            if (distancia <= RAIO_VISAO * TAMANHO_CELULA) {
+                return true; // O personagem está perto de um inimigo
+            }
+        }
+        return false; // O personagem não está perto de nenhum inimigo
     }
 }
