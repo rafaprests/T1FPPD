@@ -9,14 +9,13 @@ public class ThreadInimigo extends Thread {
 
     @Override
     public void run() {
-        while (true) {
+        while (this.inimigo.getVida() > 0) {
             // Adicione aqui a lógica para o comportamento do inimigo
-            if(mapa.personagemPertoInimigo()){
-                mapa.reduzVidaPersonagem(1);
-                System.out.print("thread de algum inimigo por aqui....");            
-            }
-            
             try {
+                if(mapa.personagemPertoInimigo()){
+                    mapa.reduzVidaPersonagem(1);
+                    
+                }
                 Thread.sleep(1000); // Por exemplo, aguarda 1 segundo entre cada ação do inimigo
             } catch (InterruptedException e) {
                 e.printStackTrace();

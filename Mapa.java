@@ -149,11 +149,20 @@ public class Mapa {
                     continue; // Continua para a próxima iteração caso a célula não exista
                 }
 
-                // Verifica se há um inimigo na célula atual
                 if (id == 'W') {
-                    // "Mata" o inimigo, removendo-o do mapa
-                    mapa.set(i, mapa.get(i).substring(0, j) + " " + mapa.get(i).substring(j + 1));
-                    return "Você matou o inimigo!";
+                    // "Ataca" o inimigo, reduzindo sua vida
+                    for (Inimigo inimigo : inimigos) {
+                        if (inimigo.getX() == j * TAMANHO_CELULA && inimigo.getY() == i * TAMANHO_CELULA) {
+                            inimigo.reduzVidaInimigo(); // Reduz a vida do inimigo em 1 ponto
+                            if (inimigo.getVida() <= 0) {
+                                // Remove o inimigo da lista caso sua vida seja menor ou igual a zero
+                                inimigos.remove(inimigo);
+                                mapa.set(i, mapa.get(i).substring(0, j) + " " + mapa.get(i).substring(j + 1));
+                                return "Você matou o inimigo!";
+                            }
+                            return "Você atacou o inimigo, mas ele ainda está vivo.";
+                        }
+                    }
                 }
             }
         }

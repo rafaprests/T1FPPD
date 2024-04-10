@@ -52,8 +52,15 @@ public class Inimigo implements ElementoMapa {
         this.vida--;
         return "atacou inimigo! vidas do inimigo: " + vida;
     }
-
     
+    public int getVida() {
+        return vida;
+    }
+
+    public void reduzVidaInimigo(){
+        this.vida -= 1;
+    }
+
     public String atacar(int posXPers, int posYPers, int tamanhoCelula, Mapa mapa) {
         // O inimigo está atacando em sua própria célula, então não é necessário calcular distância
         // Verifica se o personagem está na mesma célula do inimigo
