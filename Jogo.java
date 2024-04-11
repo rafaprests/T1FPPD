@@ -29,8 +29,8 @@
                     Font font = new Font("Roboto", Font.BOLD, 12);
                     g.setFont(font);
                     desenhaMapa(g);
-                    desenhaPersonagem(g);
                     desenhaInimigos(g);
+                    desenhaPersonagem(g);
                 }
             };
             mapPanel.setPreferredSize(new Dimension(800, 600));
@@ -88,9 +88,6 @@
 
             // Adiciona o listener para eventos de teclado
             addKeyListener(this);
-
-            // // Inicializa as threads dos inimigos
-            // iniciarThreadsInimigos();
         }
 
         // Método para iniciar as threads dos inimigos
@@ -155,7 +152,7 @@
                             // elemento.getCor());
                             g.setColor(elemento.getCor());
                             g.drawString(elemento.getSimbolo().toString(), posX, posY);
-                        }
+                            }
                     } else {
                         // Pinta a área não revelada
                         g.setColor(fogColor);

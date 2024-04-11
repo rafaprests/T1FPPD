@@ -19,7 +19,7 @@ public class Mapa {
     private final Color vegetationColor = new Color(34, 139, 34); // Cor verde para vegetação
     private final Color redColor = new Color(225, 0, 0); // Cor verde para vegetação
     private final int RAIO_VISAO = 5; // Raio de visão do personagem
-    private final int RAIO_MORTE = 2; 
+    private final int RAIO_MORTE = 2;
     private int vidaPersonagem;
 
     public Mapa(String arquivoMapa) {
@@ -28,10 +28,10 @@ public class Mapa {
         inimigos = new ArrayList<>();
         registraElementos();
         carregaMapa(arquivoMapa);
+        inicializaInimigos();
         this.vidaPersonagem = 3;
         areaRevelada = new boolean[mapa.size() + 1000][mapa.get(0).length() + 1000];
         atualizaCelulasReveladas();
-        inicializaInimigos();
     }
 
     public int getX() {
@@ -59,7 +59,7 @@ public class Mapa {
         return elementos.get(id);
     }
 
-    public List<Inimigo> getInimigos(){
+    public List<Inimigo> getInimigos() {
         return inimigos;
     }
 
@@ -126,13 +126,14 @@ public class Mapa {
             return false;
         }
 
-        inimigo.setX(inimigo.getX() + dx); 
-        inimigo.setY(inimigo.getY() + dy); 
+        inimigo.setX(inimigo.getX() + dx);
+        inimigo.setY(inimigo.getY() + dy);
 
         // Atualiza as células reveladas
         atualizaCelulasReveladas();
         return true;
     }
+
     // Verifica se o personagem pode se mover para a próxima posição
     public boolean podeMover(int nextX, int nextY) {
         int mapX = nextX / TAMANHO_CELULA;
@@ -168,34 +169,23 @@ public class Mapa {
         if (mapa == null)
             return "N.A. mapa";
 
-        // Itera sobre as células próximas ao personagem
-        for (int i = Math.max(0, y / TAMANHO_CELULA - RAIO_MORTE); i < Math.min(mapa.size(),
-                y / TAMANHO_CELULA + RAIO_MORTE); i++) {
-            for (int j = Math.max(0, x / TAMANHO_CELULA - RAIO_MORTE); j < Math.min(mapa.get(i).length(),
-                    x / TAMANHO_CELULA + RAIO_MORTE); j++) {
-                char id;
+        // Itera sobre cada inimigo para verificar a proximidade com o personagem
+        for (Inimigo inimigo : inimigos) {
+            int distanciaX = Math.abs(x - inimigo.getX());
+            int distanciaY = Math.abs(y - inimigo.getY());
+            double distancia = Math.sqrt(Math.pow(distanciaX, 2) + Math.pow(distanciaY, 2));
 
-                try {
-                    id = mapa.get(i).charAt(j);
-                } catch (StringIndexOutOfBoundsException e) {
-                    continue; // Continua para a próxima iteração caso a célula não exista
-                }
+            // Verifica se a distância é menor ou igual ao raio de interação
+            if (distancia <= RAIO_MORTE * TAMANHO_CELULA) {
+                inimigo.reduzVidaInimigo();
+                inimigos.remove(inimigo);
+                mapa.set(inimigo.getY() / TAMANHO_CELULA,
+                        mapa.get(inimigo.getY() / TAMANHO_CELULA).substring(0, inimigo.getX() / TAMANHO_CELULA)
+                                + " "
+                                + mapa.get(inimigo.getY() / TAMANHO_CELULA)
+                                        .substring(inimigo.getX() / TAMANHO_CELULA + 1));
+                return "Você matou o inimigo!";
 
-                if (id == 'W') {
-                    // "Ataca" o inimigo, reduzindo sua vida
-                    for (Inimigo inimigo : inimigos) {
-                        if (inimigo.getX() == j * TAMANHO_CELULA && inimigo.getY() == i * TAMANHO_CELULA) {
-                            inimigo.reduzVidaInimigo(); // Reduz a vida do inimigo em 1 ponto
-                            if (inimigo.getVida() <= 0) {
-                                // Remove o inimigo da lista caso sua vida seja menor ou igual a zero
-                                inimigos.remove(inimigo);
-                                mapa.set(i, mapa.get(i).substring(0, j) + " " + mapa.get(i).substring(j + 1));
-                                return "Você matou o inimigo!";
-                            }
-                            return "Você atacou o inimigo, mas ele ainda está vivo.";
-                        }
-                    }
-                }
             }
         }
         return "Nenhum inimigo próximo.";
@@ -225,19 +215,25 @@ public class Mapa {
         }
     }
 
-    //inicializacao dos inimigos
+    // inicializacao dos inimigos
     private void inicializaInimigos() {
         for (int i = 0; i < mapa.size(); i++) {
             String linha = mapa.get(i);
+            StringBuilder novaLinha = new StringBuilder(linha);
             for (int j = 0; j < linha.length(); j++) {
                 char id = linha.charAt(j);
-                if (id == 'W') { // 'W' representa um inimigo
-                    // Adiciona um novo inimigo à lista de inimigos
+                if (id == 'W') {
+                    //substitui o W por ' '
+                    novaLinha.setCharAt(j, ' ');
+                    
+                    //inicializa novo inimigo
                     Inimigo novoInimigo = new Inimigo("O", redColor);
                     novoInimigo.setX(j * TAMANHO_CELULA);
                     novoInimigo.setY(i * TAMANHO_CELULA);
                     inimigos.add(novoInimigo);
                 }
+                //substitui a linha que continha o caracter W pela linha do strinbuilder
+                mapa.set(i, novaLinha.toString());
             }
         }
     }
@@ -273,19 +269,20 @@ public class Mapa {
             System.out.println("Game Over - Personagem morreu!");
         }
     }
-    public boolean personagemPertoInimigo() {
-        for (Inimigo inimigo : inimigos) {
-            int distanciaX = Math.abs(x - inimigo.getX());
-            int distanciaY = Math.abs(y - inimigo.getY());
 
-            // Calcula a distância entre o personagem e o inimigo usando o teorema de Pitágoras
-            double distancia = Math.sqrt(Math.pow(distanciaX, 2) + Math.pow(distanciaY, 2));
+    public boolean personagemPertoInimigo(Inimigo inimigo) {
+        int distanciaX = Math.abs(x - inimigo.getX());
+        int distanciaY = Math.abs(y - inimigo.getY());
 
-            // Verifica se a distância é menor ou igual ao raio de visão
-            if (distancia <= RAIO_MORTE * TAMANHO_CELULA) {
-                return true; // O personagem está perto de um inimigo
-            }
+        // Calcula a distância entre o personagem e o inimigo usando o teorema de
+        // Pitágoras
+        double distancia = Math.sqrt(Math.pow(distanciaX, 2) + Math.pow(distanciaY, 2));
+
+        // Verifica se a distância é menor ou igual ao raio de visão
+        if (distancia <= RAIO_MORTE * TAMANHO_CELULA) {
+            return true; // O personagem está perto de um inimigo
         }
+
         return false; // O personagem não está perto de nenhum inimigo
     }
 }

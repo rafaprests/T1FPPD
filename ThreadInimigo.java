@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class ThreadInimigo extends Thread {
     private Inimigo inimigo;
     private Jogo jogo;
@@ -12,14 +14,12 @@ public class ThreadInimigo extends Thread {
         while (this.inimigo.getVida() > 0) {
             // Adicione aqui a lógica para o comportamento do inimigo
             try {
-                if(!jogo.getMapa().moveInimigo(Direcao.BAIXO, inimigo)){
-                    if(!jogo.getMapa().moveInimigo(Direcao.ESQUERDA, inimigo)){
-                        if(!jogo.getMapa().moveInimigo(Direcao.CIMA, inimigo)){
-                            jogo.getMapa().moveInimigo(Direcao.DIREITA, inimigo);
-                        }
-                    }
-                }
-                if(jogo.getMapa().personagemPertoInimigo()){
+                Random rand = new Random();
+                Direcao direcaoAleatoria = Direcao.values()[rand.nextInt(Direcao.values().length)];
+                
+                jogo.getMapa().moveInimigo(direcaoAleatoria, inimigo);
+
+                if(jogo.getMapa().personagemPertoInimigo(inimigo)){
                     jogo.getMapa().reduzVidaPersonagem(1);
                     
                 }
