@@ -2,15 +2,15 @@ import java.awt.Color;
 
 public class Vegetacao implements ElementoMapa {
     private Color cor;
-    private Character simbolo;
+    private String simbolo;
 
-    public Vegetacao(Character simbolo, Color cor) {
+    public Vegetacao(String simbolo, Color cor) {
         this.simbolo = simbolo;
         this.cor = cor;
     }
     
     @Override
-    public Character getSimbolo() {
+    public String getSimbolo() {
         return simbolo;
     }
 

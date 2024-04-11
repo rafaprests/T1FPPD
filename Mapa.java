@@ -101,8 +101,40 @@ public class Mapa {
         return true;
     }
 
+    public boolean moveInimigo(Direcao direcao, Inimigo inimigo) {
+        int dx = 0, dy = 0;
+
+        switch (direcao) {
+            case CIMA:
+                dy = -TAMANHO_CELULA;
+                break;
+            case BAIXO:
+                dy = TAMANHO_CELULA;
+                break;
+            case ESQUERDA:
+                dx = -TAMANHO_CELULA;
+                break;
+            case DIREITA:
+                dx = TAMANHO_CELULA;
+                break;
+            default:
+                return false;
+        }
+
+        if (!podeMover(inimigo.getX() + dx, inimigo.getY() + dy)) {
+            System.out.println("Não pode mover");
+            return false;
+        }
+
+        inimigo.setX(inimigo.getX() + dx); 
+        inimigo.setY(inimigo.getY() + dy); 
+
+        // Atualiza as células reveladas
+        atualizaCelulasReveladas();
+        return true;
+    }
     // Verifica se o personagem pode se mover para a próxima posição
-    private boolean podeMover(int nextX, int nextY) {
+    public boolean podeMover(int nextX, int nextY) {
         int mapX = nextX / TAMANHO_CELULA;
         int mapY = nextY / TAMANHO_CELULA - 1;
 
@@ -201,7 +233,7 @@ public class Mapa {
                 char id = linha.charAt(j);
                 if (id == 'W') { // 'W' representa um inimigo
                     // Adiciona um novo inimigo à lista de inimigos
-                    Inimigo novoInimigo = new Inimigo('O', redColor);
+                    Inimigo novoInimigo = new Inimigo("O", redColor);
                     novoInimigo.setX(j * TAMANHO_CELULA);
                     novoInimigo.setY(i * TAMANHO_CELULA);
                     inimigos.add(novoInimigo);
@@ -226,11 +258,11 @@ public class Mapa {
     // Registra os elementos do mapa
     private void registraElementos() {
         // Parede
-        elementos.put('#', new Parede('▣', brickColor));
+        elementos.put('#', new Parede("▣", brickColor));
         // Vegetação
-        elementos.put('V', new Vegetacao('♣', vegetationColor));
+        elementos.put('V', new Vegetacao("♣", vegetationColor));
         // Inimigo
-        elementos.put('W', new Inimigo('O', redColor));
+        elementos.put('W', new Inimigo("O", redColor));
     }
 
     public void reduzVidaPersonagem(int quantidade) {
@@ -250,7 +282,7 @@ public class Mapa {
             double distancia = Math.sqrt(Math.pow(distanciaX, 2) + Math.pow(distanciaY, 2));
 
             // Verifica se a distância é menor ou igual ao raio de visão
-            if (distancia <= RAIO_VISAO * TAMANHO_CELULA) {
+            if (distancia <= RAIO_MORTE * TAMANHO_CELULA) {
                 return true; // O personagem está perto de um inimigo
             }
         }

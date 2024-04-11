@@ -2,12 +2,12 @@ import java.awt.Color;
 
 public class Inimigo implements ElementoMapa {
     private Color cor;
-    private Character simbolo;
+    private String simbolo;
     private int vida;
     private int x;
     private int y;
 
-    public Inimigo(Character simbolo, Color cor) {
+    public Inimigo(String simbolo, Color cor) {
         this.simbolo = simbolo;
         this.cor = cor;
         this.vida = 1;
@@ -29,7 +29,7 @@ public class Inimigo implements ElementoMapa {
         this.y = y;
     }
     
-    public Character getSimbolo() {
+    public String getSimbolo() {
         return simbolo;
     }
 

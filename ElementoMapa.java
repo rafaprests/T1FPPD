@@ -2,7 +2,7 @@ import java.awt.Color;
 
 public interface ElementoMapa {
     // Retorna o caractere que será usado para desenhar o elemento no mapa
-    Character getSimbolo();
+    String getSimbolo();
 
     // Retorna a cor que será usada para desenhar o elemento no mapa
     Color getCor();

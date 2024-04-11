@@ -1,10 +1,10 @@
 public class ThreadInimigo extends Thread {
     private Inimigo inimigo;
-    private Mapa mapa;
+    private Jogo jogo;
 
-    public ThreadInimigo(Inimigo inimigo, Mapa mapa) {
+    public ThreadInimigo(Inimigo inimigo, Jogo jogo) {
         this.inimigo = inimigo;
-        this.mapa = mapa;
+        this.jogo = jogo;
     }
 
     @Override
@@ -12,11 +12,19 @@ public class ThreadInimigo extends Thread {
         while (this.inimigo.getVida() > 0) {
             // Adicione aqui a lógica para o comportamento do inimigo
             try {
-                if(mapa.personagemPertoInimigo()){
-                    mapa.reduzVidaPersonagem(1);
+                if(!jogo.getMapa().moveInimigo(Direcao.BAIXO, inimigo)){
+                    if(!jogo.getMapa().moveInimigo(Direcao.ESQUERDA, inimigo)){
+                        if(!jogo.getMapa().moveInimigo(Direcao.CIMA, inimigo)){
+                            jogo.getMapa().moveInimigo(Direcao.DIREITA, inimigo);
+                        }
+                    }
+                }
+                if(jogo.getMapa().personagemPertoInimigo()){
+                    jogo.getMapa().reduzVidaPersonagem(1);
                     
                 }
-                Thread.sleep(1000); // Por exemplo, aguarda 1 segundo entre cada ação do inimigo
+                jogo.repaint();
+                Thread.sleep(100); // Por exemplo, aguarda 1 segundo entre cada ação do inimigo
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
