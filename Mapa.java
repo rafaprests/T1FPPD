@@ -11,6 +11,7 @@ public class Mapa {
     private List<String> mapa;
     private Map<Character, ElementoMapa> elementos;
     private List<Inimigo> inimigos;
+    private List<Vida> vidas;
     private int x = 50; // Posição inicial X do personagem
     private int y = 50; // Posição inicial Y do personagem
     private final int TAMANHO_CELULA = 10; // Tamanho de cada célula do mapa
@@ -18,6 +19,7 @@ public class Mapa {
     private final Color brickColor = new Color(153, 76, 0); // Cor marrom para tijolos
     private final Color vegetationColor = new Color(34, 139, 34); // Cor verde para vegetação
     private final Color redColor = new Color(225, 0, 0); // Cor verde para vegetação
+    private final Color blueColor = new Color(0, 0, 255); // Cor verde para vegetação
     private final int RAIO_VISAO = 5; // Raio de visão do personagem
     private final int RAIO_MORTE = 2;
     private int vidaPersonagem;
@@ -26,10 +28,11 @@ public class Mapa {
         mapa = new ArrayList<>();
         elementos = new HashMap<>();
         inimigos = new ArrayList<>();
+        vidas = new ArrayList<>();
         registraElementos();
         carregaMapa(arquivoMapa);
-        inicializaInimigos();
-        this.vidaPersonagem = 3;
+        inicializaElementos();
+        this.vidaPersonagem = 10;
         areaRevelada = new boolean[mapa.size() + 1000][mapa.get(0).length() + 1000];
         atualizaCelulasReveladas();
     }
@@ -63,11 +66,22 @@ public class Mapa {
         return inimigos;
     }
 
+    public List<Vida> getVidas() {
+        return vidas;
+    }
+
+    public int getVidaPersonagem(){
+        return vidaPersonagem;
+    }
+
+    public void setVidaPersonagem(int vida){
+        this.vidaPersonagem = vida;
+    }
+    
     public boolean estaRevelado(int x, int y) {
         return areaRevelada[y][x];
     }
 
-    // Move conforme enum Direcao
     public boolean move(Direcao direcao) {
         int dx = 0, dy = 0;
 
@@ -89,7 +103,7 @@ public class Mapa {
         }
 
         if (!podeMover(x + dx, y + dy)) {
-            System.out.println("Não pode mover");
+            System.out.println("Não pode mover o personagem");
             return false;
         }
 
@@ -101,7 +115,7 @@ public class Mapa {
         return true;
     }
 
-    public boolean moveInimigo(Direcao direcao, Inimigo inimigo) {
+    public boolean moveElemento(Direcao direcao, ElementoMapa elemento) {
         int dx = 0, dy = 0;
 
         switch (direcao) {
@@ -121,13 +135,13 @@ public class Mapa {
                 return false;
         }
 
-        if (!podeMover(inimigo.getX() + dx, inimigo.getY() + dy)) {
-            System.out.println("Não pode mover");
+        if (!podeMover(elemento.getX() + dx, elemento.getY() + dy)) {
+            System.out.println("Não pode mover o inimigo");
             return false;
         }
 
-        inimigo.setX(inimigo.getX() + dx);
-        inimigo.setY(inimigo.getY() + dy);
+        elemento.setX(elemento.getX() + dx);
+        elemento.setY(elemento.getY() + dy);
 
         // Atualiza as células reveladas
         atualizaCelulasReveladas();
@@ -165,7 +179,7 @@ public class Mapa {
         return false;
     }
 
-    public String interage() {
+    public String ataca() {
         if (mapa == null)
             return "N.A. mapa";
 
@@ -191,9 +205,31 @@ public class Mapa {
         return "Nenhum inimigo próximo.";
     }
 
-    public String ataca() {
-        // TODO: Implementar
-        return "Ataca";
+    public String interage() {
+        if (mapa == null)
+            return "N.A. mapa";
+
+        // Itera sobre cada inimigo para verificar a proximidade com o personagem
+        for (Vida vida : vidas) {
+            int distanciaX = Math.abs(x - vida.getX());
+            int distanciaY = Math.abs(y - vida.getY());
+            double distancia = Math.sqrt(Math.pow(distanciaX, 2) + Math.pow(distanciaY, 2));
+
+            // Verifica se a distância é menor ou igual ao raio de interação
+            if (distancia <= RAIO_MORTE * TAMANHO_CELULA) {
+                setVidaPersonagem(vida.getQuantidadeVida());
+                vidas.remove(vida);
+                mapa.set(vida.getY() / TAMANHO_CELULA,
+                        mapa.get(vida.getY() / TAMANHO_CELULA).substring(0, vida.getX() / TAMANHO_CELULA)
+                                + " "
+                                + mapa.get(vida.getY() / TAMANHO_CELULA)
+                                        .substring(vida.getX() / TAMANHO_CELULA + 1));
+                return "Você ganhou 25 de vida!";
+
+            }
+        }
+        return "Nenhum inimigo próximo.";
+
     }
 
     private void carregaMapa(String filename) {
@@ -216,7 +252,7 @@ public class Mapa {
     }
 
     // inicializacao dos inimigos
-    private void inicializaInimigos() {
+    private void inicializaElementos() {
         for (int i = 0; i < mapa.size(); i++) {
             String linha = mapa.get(i);
             StringBuilder novaLinha = new StringBuilder(linha);
@@ -231,6 +267,16 @@ public class Mapa {
                     novoInimigo.setX(j * TAMANHO_CELULA);
                     novoInimigo.setY(i * TAMANHO_CELULA);
                     inimigos.add(novoInimigo);
+                }
+                if(id == 'C'){
+                    //substitui o C por ' '
+                    novaLinha.setCharAt(j, ' ');
+
+                    //inicializa nova vida
+                    Vida novaVida = new Vida("+", blueColor);
+                    novaVida.setX(j * TAMANHO_CELULA);
+                    novaVida.setY(i * TAMANHO_CELULA);
+                    vidas.add(novaVida);
                 }
                 //substitui a linha que continha o caracter W pela linha do strinbuilder
                 mapa.set(i, novaLinha.toString());
@@ -253,12 +299,10 @@ public class Mapa {
 
     // Registra os elementos do mapa
     private void registraElementos() {
-        // Parede
         elementos.put('#', new Parede("▣", brickColor));
-        // Vegetação
         elementos.put('V', new Vegetacao("♣", vegetationColor));
-        // Inimigo
         elementos.put('W', new Inimigo("O", redColor));
+        elementos.put('C', new Vida("+", blueColor));
     }
 
     public void reduzVidaPersonagem(int quantidade) {
@@ -270,19 +314,16 @@ public class Mapa {
         }
     }
 
-    public boolean personagemPertoInimigo(Inimigo inimigo) {
-        int distanciaX = Math.abs(x - inimigo.getX());
-        int distanciaY = Math.abs(y - inimigo.getY());
-
-        // Calcula a distância entre o personagem e o inimigo usando o teorema de
-        // Pitágoras
+    public boolean personagemPerto(ElementoMapa elemento) {
+        int distanciaX = Math.abs(x - elemento.getX());
+        int distanciaY = Math.abs(y - elemento.getY());
         double distancia = Math.sqrt(Math.pow(distanciaX, 2) + Math.pow(distanciaY, 2));
 
         // Verifica se a distância é menor ou igual ao raio de visão
         if (distancia <= RAIO_MORTE * TAMANHO_CELULA) {
-            return true; // O personagem está perto de um inimigo
+            return true; 
         }
 
-        return false; // O personagem não está perto de nenhum inimigo
+        return false; 
     }
 }

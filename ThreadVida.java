@@ -1,28 +1,23 @@
 import java.util.Random;
 
-public class ThreadInimigo extends Thread {
-    private Inimigo inimigo;
+public class ThreadVida extends Thread {
+    private Vida vida;
     private Jogo jogo;
 
-    public ThreadInimigo(Inimigo inimigo, Jogo jogo) {
-        this.inimigo = inimigo;
+    public ThreadVida(Vida vida, Jogo jogo) {
+        this.vida = vida;
         this.jogo = jogo;
     }
 
     @Override
     public void run() {
-        while (this.inimigo.getVida() > 0) {
-            // Adicione aqui a lógica para o comportamento do inimigo
+        while (this.vida.getStatus()) {
             try {
                 Random rand = new Random();
                 Direcao direcaoAleatoria = Direcao.values()[rand.nextInt(Direcao.values().length)];
                 
-                jogo.getMapa().moveElemento(direcaoAleatoria, inimigo);
+                jogo.getMapa().moveElemento(direcaoAleatoria, vida);
 
-                if(jogo.getMapa().personagemPerto(inimigo)){
-                    jogo.getMapa().reduzVidaPersonagem(1);
-                    
-                }
                 jogo.repaint();
                 Thread.sleep(100); // Por exemplo, aguarda 1 segundo entre cada ação do inimigo
             } catch (InterruptedException e) {

@@ -49,8 +49,7 @@ public class Inimigo implements ElementoMapa {
 
     @Override
     public String interage() {
-        this.vida--;
-        return "atacou inimigo! vidas do inimigo: " + vida;
+        return "";
     }
     
     public int getVida() {
@@ -58,7 +57,7 @@ public class Inimigo implements ElementoMapa {
     }
 
     public void reduzVidaInimigo(){
-        this.vida -= 1;
+        vida -= 1;
     }
 
     public String atacar(int posXPers, int posYPers, int tamanhoCelula, Mapa mapa) {
