@@ -156,8 +156,6 @@ public class Jogo extends JFrame implements KeyListener {
                 if (mapa.estaRevelado(j, i)) {
                     ElementoMapa elemento = mapa.getElemento(j, i);
                     if (elemento != null) {
-                        // System.out.println("Elemento: " + elemento.getSimbolo() + " " +
-                        // elemento.getCor());
                         g.setColor(elemento.getCor());
                         g.drawString(elemento.getSimbolo().toString(), posX, posY);
 

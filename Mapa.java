@@ -12,15 +12,15 @@ public class Mapa {
     private Map<Character, ElementoMapa> elementos;
     private List<Inimigo> inimigos;
     private List<Vida> vidas;
-    private int x = 50; // Posição inicial X do personagem
-    private int y = 50; // Posição inicial Y do personagem
-    private final int TAMANHO_CELULA = 10; // Tamanho de cada célula do mapa
-    private boolean[][] areaRevelada; // Rastreia quais partes do mapa foram reveladas
-    private final Color brickColor = new Color(153, 76, 0); // Cor marrom para tijolos
-    private final Color vegetationColor = new Color(34, 139, 34); // Cor verde para vegetação
-    private final Color redColor = new Color(225, 0, 0); // Cor verde para vegetação
-    private final Color blueColor = new Color(0, 0, 255); // Cor verde para vegetação
-    private final int RAIO_VISAO = 5; // Raio de visão do personagem
+    private int x = 50; 
+    private int y = 50; 
+    private final int TAMANHO_CELULA = 10; 
+    private boolean[][] areaRevelada; 
+    private final Color brickColor = new Color(153, 76, 0); 
+    private final Color vegetationColor = new Color(34, 139, 34); 
+    private final Color redColor = new Color(225, 0, 0); 
+    private final Color blueColor = new Color(0, 0, 255); 
+    private final int RAIO_VISAO = 5; 
     private final int RAIO_MORTE = 2;
     private final int VIDAMAXIMA = 25;
     private int vidaPersonagem;
@@ -143,6 +143,10 @@ public class Mapa {
             default:
                 return false;
         }
+        
+        //garante que o inimigo nao atravessa o personagem
+        if(elemento instanceof Inimigo && elemento.getX() + dx == x && elemento.getY() + dy == y)
+            return false;
 
         if (!podeMover(elemento.getX() + dx, elemento.getY() + dy)) {
             return false;
@@ -173,11 +177,11 @@ public class Mapa {
 
             if (id == ' ')
                 return true;
-
+            
             ElementoMapa elemento = elementos.get(id);
             if (elemento != null) {
                 return elemento.podeSerAtravessado();
-            }
+            }  
         }
 
         return false;
@@ -288,7 +292,6 @@ public class Mapa {
         }
     }
 
-    // Método para atualizar as células reveladas
     private void atualizaCelulasReveladas() {
         if (mapa == null)
             return;
@@ -301,7 +304,6 @@ public class Mapa {
         }
     }
 
-    // Registra os elementos do mapa
     private void registraElementos() {
         elementos.put('#', new Parede("▣", brickColor));
         elementos.put('V', new Vegetacao("♣", vegetationColor));

@@ -20,9 +20,9 @@ public class ThreadVida extends Thread {
 
                 //faz a vida piscar
                 vida.piscar();
-                
+
                 jogo.repaint();
-                Thread.sleep(100); // Por exemplo, aguarda 1 segundo entre cada ação do inimigo
+                Thread.sleep(100); 
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

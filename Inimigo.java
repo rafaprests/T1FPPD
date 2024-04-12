@@ -59,17 +59,4 @@ public class Inimigo implements ElementoMapa {
     public void reduzVidaInimigo(){
         vida -= 1;
     }
-
-    public String atacar(int posXPers, int posYPers, int tamanhoCelula, Mapa mapa) {
-        // O inimigo está atacando em sua própria célula, então não é necessário calcular distância
-        // Verifica se o personagem está na mesma célula do inimigo
-        if (posXPers % tamanhoCelula == 0 && posYPers % tamanhoCelula == 0) {
-            // O personagem está na mesma célula que o inimigo, realiza o ataque
-            mapa.reduzVidaPersonagem(1);
-            return "O inimigo atacou o personagem!";
-        } else {
-            // O personagem não está na mesma célula que o inimigo
-            return "O inimigo não pode atacar.";
-        }
-    }
 }
