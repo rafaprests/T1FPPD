@@ -12,14 +12,14 @@ public class Mapa {
     private Map<Character, ElementoMapa> elementos;
     private List<Inimigo> inimigos;
     private List<Vida> vidas;
+    private List<Chave> chaves;
     private int x = 50; 
     private int y = 50; 
     private final int TAMANHO_CELULA = 10; 
     private boolean[][] areaRevelada; 
-    private final Color brickColor = new Color(153, 76, 0); 
-    private final Color vegetationColor = new Color(34, 139, 34); 
     private final Color redColor = new Color(225, 0, 0); 
     private final Color blueColor = new Color(0, 0, 255); 
+    private final Color goldColor = new Color(218, 165, 32); 
     private final int RAIO_VISAO = 5; 
     private final int RAIO_MORTE = 2;
     private final int VIDAMAXIMA = 25;
@@ -30,6 +30,7 @@ public class Mapa {
         elementos = new HashMap<>();
         inimigos = new ArrayList<>();
         vidas = new ArrayList<>();
+        chaves = new ArrayList<>();
         registraElementos();
         carregaMapa(arquivoMapa);
         inicializaElementos();
@@ -73,6 +74,10 @@ public class Mapa {
 
     public List<Vida> getVidas() {
         return vidas;
+    }
+
+    public List<Chave> getChaves() {
+        return chaves;
     }
 
     public int getVidaPersonagem(){
@@ -286,6 +291,16 @@ public class Mapa {
                     novaVida.setY(i * TAMANHO_CELULA);
                     vidas.add(novaVida);
                 }
+                if(id == 'K'){
+                    //substitui o K por ' '
+                    novaLinha.setCharAt(j, ' ');
+
+                    //inicializa nova vida
+                    Chave novaChave = new Chave("$", goldColor);
+                    novaChave.setX(j * TAMANHO_CELULA);
+                    novaChave.setY(i * TAMANHO_CELULA);
+                    chaves.add(novaChave);
+                }
                 //substitui a linha que continha o caracter W pela linha do strinbuilder
                 mapa.set(i, novaLinha.toString());
             }
@@ -305,10 +320,11 @@ public class Mapa {
     }
 
     private void registraElementos() {
-        elementos.put('#', new Parede("▣", brickColor));
-        elementos.put('V', new Vegetacao("♣", vegetationColor));
-        elementos.put('W', new Inimigo("O", redColor));
-        elementos.put('C', new Vida("+", blueColor));
+        elementos.put('#', new Parede("▣", new Color(153, 76, 0))); 
+        elementos.put('V', new Vegetacao("♣", new Color(34, 139, 34))); 
+        elementos.put('W', new Inimigo("O", redColor)); 
+        elementos.put('C', new Vida("+", blueColor)); 
+        elementos.put('K', new Chave("$", goldColor)); 
     }
 
     public void reduzVidaPersonagem(int quantidade) {

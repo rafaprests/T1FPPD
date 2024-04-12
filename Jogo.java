@@ -31,6 +31,7 @@ public class Jogo extends JFrame implements KeyListener {
                 desenhaMapa(g);
                 desenhaInimigos(g);
                 desenhaVidas(g);
+                desenhaChaves(g);
                 desenhaPersonagem(g);
             }
         };
@@ -107,6 +108,16 @@ public class Jogo extends JFrame implements KeyListener {
         for (Vida vida : vidas) {
             ThreadVida threadVida = new ThreadVida(vida, this);
             threadVida.start();
+        }
+    }
+
+    // Método para iniciar as threads das vidas
+    public void iniciarThreadsChaves() {
+        List<Chave> chaves = mapa.getChaves();
+
+        for (Chave chave : chaves) {
+            ThreadChave threadChave = new ThreadChave(chave, this);
+            threadChave.start();
         }
     }
 
@@ -192,6 +203,15 @@ public class Jogo extends JFrame implements KeyListener {
 
     }
 
+    private void desenhaChaves(Graphics g) {
+        for (int i = 0; i < mapa.getChaves().size(); i++) {
+            g.setColor(mapa.getChaves().get(i).getCor());
+            g.drawString(mapa.getChaves().get(i).getSimbolo(), mapa.getChaves().get(i).getX(),
+                    mapa.getChaves().get(i).getY());
+        }
+
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
         // Não necessário
@@ -252,6 +272,7 @@ public class Jogo extends JFrame implements KeyListener {
             jogo.setVisible(true);
             jogo.iniciarThreadsInimigos();
             jogo.iniciarThreadsVidas();
+            jogo.iniciarThreadsChaves();
         });
     }
 }
