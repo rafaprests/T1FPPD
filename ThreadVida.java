@@ -13,11 +13,14 @@ public class ThreadVida extends Thread {
     public void run() {
         while (this.vida.getStatus()) {
             try {
+                //movimenta a vida
                 Random rand = new Random();
-                Direcao direcaoAleatoria = Direcao.values()[rand.nextInt(Direcao.values().length)];
-                
+                Direcao direcaoAleatoria = Direcao.values()[rand.nextInt(Direcao.values().length)];    
                 jogo.getMapa().moveElemento(direcaoAleatoria, vida);
 
+                //faz a vida piscar
+                vida.piscar();
+                
                 jogo.repaint();
                 Thread.sleep(100); // Por exemplo, aguarda 1 segundo entre cada ação do inimigo
             } catch (InterruptedException e) {

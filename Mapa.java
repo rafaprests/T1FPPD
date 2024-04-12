@@ -22,6 +22,7 @@ public class Mapa {
     private final Color blueColor = new Color(0, 0, 255); // Cor verde para vegetação
     private final int RAIO_VISAO = 5; // Raio de visão do personagem
     private final int RAIO_MORTE = 2;
+    private final int VIDAMAXIMA = 25;
     private int vidaPersonagem;
 
     public Mapa(String arquivoMapa) {
@@ -32,7 +33,7 @@ public class Mapa {
         registraElementos();
         carregaMapa(arquivoMapa);
         inicializaElementos();
-        this.vidaPersonagem = 10;
+        this.vidaPersonagem = 25;
         areaRevelada = new boolean[mapa.size() + 1000][mapa.get(0).length() + 1000];
         atualizaCelulasReveladas();
     }
@@ -43,6 +44,10 @@ public class Mapa {
 
     public int getY() {
         return y;
+    }
+
+    public int getVidaMaxima(){
+        return VIDAMAXIMA;
     }
 
     public int getTamanhoCelula() {
@@ -75,7 +80,12 @@ public class Mapa {
     }
 
     public void setVidaPersonagem(int vida){
-        this.vidaPersonagem = vida;
+        if(vidaPersonagem + vida >= VIDAMAXIMA){
+            this.vidaPersonagem = VIDAMAXIMA;
+        }
+        else{
+            vidaPersonagem += vida;
+        }
     }
     
     public boolean estaRevelado(int x, int y) {
@@ -110,7 +120,6 @@ public class Mapa {
         x += dx;
         y += dy;
 
-        // Atualiza as células reveladas
         atualizaCelulasReveladas();
         return true;
     }
@@ -136,19 +145,16 @@ public class Mapa {
         }
 
         if (!podeMover(elemento.getX() + dx, elemento.getY() + dy)) {
-            System.out.println("Não pode mover o inimigo");
             return false;
         }
 
         elemento.setX(elemento.getX() + dx);
         elemento.setY(elemento.getY() + dy);
 
-        // Atualiza as células reveladas
         atualizaCelulasReveladas();
         return true;
     }
 
-    // Verifica se o personagem pode se mover para a próxima posição
     public boolean podeMover(int nextX, int nextY) {
         int mapX = nextX / TAMANHO_CELULA;
         int mapY = nextY / TAMANHO_CELULA - 1;
@@ -170,8 +176,6 @@ public class Mapa {
 
             ElementoMapa elemento = elementos.get(id);
             if (elemento != null) {
-                // System.out.println("Elemento: " + elemento.getSimbolo() + " " +
-                // elemento.getCor());
                 return elemento.podeSerAtravessado();
             }
         }
@@ -224,11 +228,11 @@ public class Mapa {
                                 + " "
                                 + mapa.get(vida.getY() / TAMANHO_CELULA)
                                         .substring(vida.getX() / TAMANHO_CELULA + 1));
-                return "Você ganhou 25 de vida!";
+                return "Você ganhou 10 de vida!";
 
             }
         }
-        return "Nenhum inimigo próximo.";
+        return "Nada interativo por aqui...";
 
     }
 

@@ -2,17 +2,18 @@ import java.awt.Color;
 
 public class Vida implements ElementoMapa {
     private Color cor;
+    private Color corPisca;
     private String simbolo;
     private int x;
     private int y;
     private boolean status;
-    private int quantidadeVida;
+    private final int quantidadeVida = 10;
 
     public Vida(String simbolo, Color cor) {
         this.simbolo = simbolo;
+        this.corPisca = cor;
         this.cor = cor;
         this.status = true;
-        quantidadeVida = 25;
     }
 
     public int getX(){
@@ -69,5 +70,13 @@ public class Vida implements ElementoMapa {
 
     public int getQuantidadeVida(){
         return this.quantidadeVida;
+    }
+
+    public void piscar(){
+        if (cor.equals(corPisca)) {
+            cor = new Color(0, 255, 0);
+        } else {
+            cor = corPisca;
+        }
     }
 }
