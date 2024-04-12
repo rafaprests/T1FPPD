@@ -1,10 +1,10 @@
 import java.util.Random;
 
 public class ThreadInimigo extends Thread {
-    private Inimigo inimigo;
+    private ElementoMapa inimigo;
     private Jogo jogo;
 
-    public ThreadInimigo(Inimigo inimigo, Jogo jogo) {
+    public ThreadInimigo(ElementoMapa inimigo, Jogo jogo) {
         this.inimigo = inimigo;
         this.jogo = jogo;
     }

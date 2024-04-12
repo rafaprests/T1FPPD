@@ -1,10 +1,10 @@
 import java.util.Random;
 
 public class ThreadVida extends Thread {
-    private Vida vida;
+    private ElementoMapa vida;
     private Jogo jogo;
 
-    public ThreadVida(Vida vida, Jogo jogo) {
+    public ThreadVida(ElementoMapa vida, Jogo jogo) {
         this.vida = vida;
         this.jogo = jogo;
     }

@@ -57,4 +57,34 @@ public class Vegetacao implements ElementoMapa {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setY'");
     }
+
+    @Override
+    public int getQuantidadeVida() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getQuantidadeVida'");
+    }
+
+    @Override
+    public void reduzVidaInimigo() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reduzVidaInimigo'");
+    }
+
+    @Override
+    public boolean getStatus() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getStatus'");
+    }
+
+    @Override
+    public int getVida() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getVida'");
+    }
+
+    @Override
+    public void piscar() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'piscar'");
+    }
 }

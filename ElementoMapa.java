@@ -23,4 +23,14 @@ public interface ElementoMapa {
     void setX(int x);
 
     void setY(int y);
+
+    int getQuantidadeVida();
+
+    void reduzVidaInimigo();
+
+    boolean getStatus();
+
+    int getVida();
+
+    void piscar();
 }

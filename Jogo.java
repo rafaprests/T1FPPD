@@ -29,9 +29,7 @@ public class Jogo extends JFrame implements KeyListener {
                 Font font = new Font("Roboto", Font.BOLD, 12);
                 g.setFont(font);
                 desenhaMapa(g);
-                desenhaInimigos(g);
-                desenhaVidas(g);
-                desenhaChaves(g);
+                desenhaElementos(g);
                 desenhaPersonagem(g);
             }
         };
@@ -91,33 +89,24 @@ public class Jogo extends JFrame implements KeyListener {
         addKeyListener(this);
     }
 
-    // Método para iniciar as threads dos inimigos
-    public void iniciarThreadsInimigos() {
-        List<Inimigo> inimigos = mapa.getInimigos();
+    // Método para iniciar as threads
+    public void iniciarThreadsElementos() {
+        List<ElementoMapa> listaElementos = mapa.getListaElementos();
 
-        for (Inimigo inimigo : inimigos) {
-            ThreadInimigo threadInimigo = new ThreadInimigo(inimigo, this);
-            threadInimigo.start();
-        }
-    }
-
-    // Método para iniciar as threads das vidas
-    public void iniciarThreadsVidas() {
-        List<Vida> vidas = mapa.getVidas();
-
-        for (Vida vida : vidas) {
-            ThreadVida threadVida = new ThreadVida(vida, this);
-            threadVida.start();
-        }
-    }
-
-    // Método para iniciar as threads das vidas
-    public void iniciarThreadsChaves() {
-        List<Chave> chaves = mapa.getChaves();
-
-        for (Chave chave : chaves) {
-            ThreadChave threadChave = new ThreadChave(chave, this);
-            threadChave.start();
+        for (ElementoMapa elemento : listaElementos) {
+            if(elemento instanceof Inimigo){
+                ThreadInimigo threadInimigo = new ThreadInimigo(elemento, this);
+                threadInimigo.start();
+            }
+            if(elemento instanceof Vida){
+                ThreadVida threadVida = new ThreadVida(elemento, this);
+                threadVida.start();
+            }
+            if(elemento instanceof Chave){
+                ThreadChave threadChave = new ThreadChave(elemento, this);
+                threadChave.start();
+            }
+            
         }
     }
 
@@ -185,29 +174,11 @@ public class Jogo extends JFrame implements KeyListener {
         g.drawString("☺", mapa.getX(), mapa.getY());
     }
 
-    private void desenhaInimigos(Graphics g) {
-        for (int i = 0; i < mapa.getInimigos().size(); i++) {
-            g.setColor(mapa.getInimigos().get(i).getCor());
-            g.drawString(mapa.getInimigos().get(i).getSimbolo(), mapa.getInimigos().get(i).getX(),
-                    mapa.getInimigos().get(i).getY());
-        }
-
-    }
-
-    private void desenhaVidas(Graphics g) {
-        for (int i = 0; i < mapa.getVidas().size(); i++) {
-            g.setColor(mapa.getVidas().get(i).getCor());
-            g.drawString(mapa.getVidas().get(i).getSimbolo(), mapa.getVidas().get(i).getX(),
-                    mapa.getVidas().get(i).getY());
-        }
-
-    }
-
-    private void desenhaChaves(Graphics g) {
-        for (int i = 0; i < mapa.getChaves().size(); i++) {
-            g.setColor(mapa.getChaves().get(i).getCor());
-            g.drawString(mapa.getChaves().get(i).getSimbolo(), mapa.getChaves().get(i).getX(),
-                    mapa.getChaves().get(i).getY());
+    private void desenhaElementos(Graphics g) {
+        for (int i = 0; i < mapa.getListaElementos().size(); i++) {
+            g.setColor(mapa.getListaElementos().get(i).getCor());
+            g.drawString(mapa.getListaElementos().get(i).getSimbolo(), mapa.getListaElementos().get(i).getX(),
+                    mapa.getListaElementos().get(i).getY());
         }
 
     }
@@ -270,9 +241,7 @@ public class Jogo extends JFrame implements KeyListener {
         SwingUtilities.invokeLater(() -> {
             Jogo jogo = new Jogo("mapa.txt");
             jogo.setVisible(true);
-            jogo.iniciarThreadsInimigos();
-            jogo.iniciarThreadsVidas();
-            jogo.iniciarThreadsChaves();
+            jogo.iniciarThreadsElementos();
         });
     }
 }

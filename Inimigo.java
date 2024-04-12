@@ -59,4 +59,22 @@ public class Inimigo implements ElementoMapa {
     public void reduzVidaInimigo(){
         vida -= 1;
     }
+
+    @Override
+    public int getQuantidadeVida() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getQuantidadeVida'");
+    }
+
+    @Override
+    public boolean getStatus() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getStatus'");
+    }
+
+    @Override
+    public void piscar() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'piscar'");
+    }
 }

@@ -1,10 +1,10 @@
 import java.util.Random;
 
 public class ThreadChave extends Thread {
-    private Chave chave;
+    private ElementoMapa chave;
     private Jogo jogo;
 
-    public ThreadChave(Chave chave, Jogo jogo) {
+    public ThreadChave(ElementoMapa chave, Jogo jogo) {
         this.chave = chave;
         this.jogo = jogo;
     }

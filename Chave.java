@@ -64,4 +64,28 @@ public class Chave implements ElementoMapa {
         System.out.println("Mais 25 de vida!");
         return null;
     }
+
+    @Override
+    public int getQuantidadeVida() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getQuantidadeVida'");
+    }
+
+    @Override
+    public void reduzVidaInimigo() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reduzVidaInimigo'");
+    }
+
+    @Override
+    public int getVida() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getVida'");
+    }
+
+    @Override
+    public void piscar() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'piscar'");
+    }
 }
