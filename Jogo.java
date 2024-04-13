@@ -8,7 +8,7 @@ public class Jogo extends JFrame implements KeyListener {
     private JLabel statusBar;
     private JLabel keyBar;
     private Mapa mapa;
-    private final Color fogColor = new Color(192, 192, 192, 150); // Cor cinza claro com transparência para nevoa
+    private final Color fogColor = new Color(192, 192, 192); // Cor cinza claro com transparência para nevoa
     private final Color characterColor = Color.BLACK; // Cor preta para o personagem
 
     public Jogo(String arquivoMapa) {
@@ -29,9 +29,9 @@ public class Jogo extends JFrame implements KeyListener {
                 // Define a fonte para garantir que o caractere caiba em 10x10 pixels
                 Font font = new Font("Roboto", Font.BOLD, 12);
                 g.setFont(font);
-                desenhaMapa(g);
                 desenhaElementos(g);
                 desenhaPersonagem(g);
+                desenhaMapa(g);
             }
         };
         mapPanel.setPreferredSize(new Dimension(800, 600));
@@ -205,6 +205,7 @@ public class Jogo extends JFrame implements KeyListener {
         g.drawString("☺", mapa.getX(), mapa.getY());
     }
 
+   
     private void desenhaElementos(Graphics g) {
         for (int i = 0; i < mapa.getListaElementos().size(); i++) {
             g.setColor(mapa.getListaElementos().get(i).getCor());
