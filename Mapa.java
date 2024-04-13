@@ -272,7 +272,10 @@ public class Mapa {
                     novaLinha.setCharAt(j, ' ');
                     
                     //inicializa novo inimigo
-                    Inimigo novoInimigo = new Inimigo("O", redColor);
+                   // Inimigo novoInimigo = new Inimigo("O", redColor);
+                    // Inimigo novoInimigo = new Inimigo("⚉", redColor);
+                    Inimigo novoInimigo = new Inimigo("⛄", redColor);
+
                     novoInimigo.setX(j * TAMANHO_CELULA);
                     novoInimigo.setY(i * (TAMANHO_CELULA + 1));
                     listaElementos.add(novoInimigo);
@@ -292,7 +295,9 @@ public class Mapa {
                     novaLinha.setCharAt(j, ' ');
 
                     //inicializa nova vida
-                    Chave novaChave = new Chave("$", goldColor);
+                    // Chave novaChave = new Chave("$", goldColor);
+                    Chave novaChave = new Chave("⚿", goldColor);
+
                     novaChave.setX(j * TAMANHO_CELULA);
                     novaChave.setY(i * (TAMANHO_CELULA + 1));
                     listaElementos.add(novaChave);
