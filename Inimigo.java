@@ -77,4 +77,10 @@ public class Inimigo implements ElementoMapa {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'piscar'");
     }
+
+    @Override
+    public void setStatus(boolean b) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setStatus'");
+    }
 }

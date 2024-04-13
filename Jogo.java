@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Jogo extends JFrame implements KeyListener {
     private JLabel statusBar;
+    private JLabel keyBar;
     private Mapa mapa;
     private final Color fogColor = new Color(192, 192, 192, 150); // Cor cinza claro com transparência para nevoa
     private final Color characterColor = Color.BLACK; // Cor preta para o personagem
@@ -72,11 +73,21 @@ public class Jogo extends JFrame implements KeyListener {
         statusBar.setBorder(BorderFactory.createEtchedBorder());
         statusBar.setHorizontalAlignment(SwingConstants.CENTER);
 
+        keyBar = new JLabel(desenhaBarraChaves());
+        keyBar.setBorder(BorderFactory.createEtchedBorder());
+        keyBar.setHorizontalAlignment(SwingConstants.LEFT);
+
         // Painel para botões e barra de status
         JPanel southPanel = new JPanel();
-        southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.X_AXIS));
-        southPanel.add(statusBar);
-        southPanel.add(buttonPanel);
+        JPanel ssPanel = new JPanel();
+        
+        ssPanel.setLayout(new BoxLayout(ssPanel, BoxLayout.X_AXIS));
+        ssPanel.add(statusBar);
+        ssPanel.add(buttonPanel);
+
+        southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
+        southPanel.add(keyBar);
+        southPanel.add(ssPanel);
 
         // Adiciona os paineis ao JFrame
         add(mapPanel, BorderLayout.CENTER);
@@ -88,7 +99,16 @@ public class Jogo extends JFrame implements KeyListener {
         // Adiciona o listener para eventos de teclado
         addKeyListener(this);
 
-        iniciarThreadsElementos();;
+        iniciarThreadsElementos();
+        
+    }
+
+    public JLabel getKeyBar(){
+        return keyBar;
+    }
+
+    public JLabel getStatusBar(){
+        return statusBar;
     }
 
     // Método para iniciar as threads
@@ -96,20 +116,33 @@ public class Jogo extends JFrame implements KeyListener {
         List<ElementoMapa> listaElementos = mapa.getListaElementos();
 
         for (ElementoMapa elemento : listaElementos) {
-            if(elemento instanceof Inimigo){
+            if (elemento instanceof Inimigo) {
                 ThreadInimigo threadInimigo = new ThreadInimigo(elemento, this);
                 threadInimigo.start();
             }
-            if(elemento instanceof Vida){
+            if (elemento instanceof Vida) {
                 ThreadVida threadVida = new ThreadVida(elemento, this);
                 threadVida.start();
             }
-            if(elemento instanceof Chave){
+            if (elemento instanceof Chave) {
                 ThreadChave threadChave = new ThreadChave(elemento, this);
                 threadChave.start();
             }
-            
+
         }
+
+        Thread threadStatus = new Thread(() -> {
+            while (true) {
+                try {
+                    // Atualiza a statusBar
+                    SwingUtilities.invokeLater(() -> statusBar.setText(desenhaBarraStatus()));
+                    Thread.sleep(100); // Aguarda 100 milissegundos
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        threadStatus.start();
     }
 
     public void move(Direcao direcao) {
@@ -119,10 +152,6 @@ public class Jogo extends JFrame implements KeyListener {
         // Modifica posição do personagem no mapa
         if (!mapa.move(direcao))
             return;
-
-        // Atualiza a barra de status
-        if (statusBar != null)
-            statusBar.setText(desenhaBarraStatus());
 
         // Redesenha o painel
         repaint();
@@ -149,7 +178,7 @@ public class Jogo extends JFrame implements KeyListener {
     }
 
     private void desenhaMapa(Graphics g) {
-        int tamanhoCelula = mapa.getTamanhoCelula();
+        int tamanhoCelula = mapa.TAMANHO_CELULA;
         for (int i = 0; i < mapa.getNumLinhas(); i++) {
             for (int j = 0; j < mapa.getNumColunas(); j++) {
                 int posX = j * tamanhoCelula;
@@ -226,14 +255,21 @@ public class Jogo extends JFrame implements KeyListener {
         s.append("<html><font color=\"red\">");
         for (int i = 0; i < mapa.getVidaMaxima(); i++) {
             if (i < mapa.getVidaPersonagem()) {
-                // s.append("■");
                 s.append("♥");
-                
+
             } else {
-                // s.append("□");
                 s.append("♡");
-                
             }
+        }
+        s.append("</font></html>");
+        return s.toString();
+    }
+
+    public String desenhaBarraChaves() {
+        StringBuilder s = new StringBuilder();
+        s.append("<html><font color=\"#FFD700\">");
+        for (int i = 0; i < mapa.nroChaves; i++) {
+            s.append("🔑");
         }
         s.append("</font></html>");
         return s.toString();
@@ -247,7 +283,6 @@ public class Jogo extends JFrame implements KeyListener {
         SwingUtilities.invokeLater(() -> {
             Jogo jogo = new Jogo("mapa.txt");
             jogo.setVisible(true);
-            //jogo.iniciarThreadsElementos();
         });
     }
 }

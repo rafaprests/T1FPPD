@@ -22,7 +22,7 @@ public class ThreadInimigo extends Thread {
                     jogo.getMapa().reduzVidaPersonagem(1);                    
                 }
                 jogo.repaint();
-                Thread.sleep(500); 
+                Thread.sleep(100); 
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
