@@ -13,22 +13,26 @@ public class ThreadChave extends Thread {
     public void run() {
         while (this.chave.getStatus()) {
             try {
-                //movimenta a vida
+                // Movimenta a chave
                 Random rand = new Random();
                 Direcao direcaoAleatoria = Direcao.values()[rand.nextInt(Direcao.values().length)];    
                 jogo.getMapa().moveElemento(direcaoAleatoria, chave); 
-                if(chave.getX() == jogo.getMapa().getX() && chave.getY() == jogo.getMapa().getY()){
+
+                // Verifica se o personagem está na mesma célula que a chave
+                int playerCellX = jogo.getMapa().getX() / jogo.getMapa().TAMANHO_CELULA;
+                int playerCellY = jogo.getMapa().getY() / jogo.getMapa().TAMANHO_CELULA; // Ajuste para a posição do personagem
+
+                int keyCellX = chave.getX() / jogo.getMapa().TAMANHO_CELULA;
+                int keyCellY = chave.getY() / jogo.getMapa().TAMANHO_CELULA;
+
+                if (playerCellX == keyCellX && playerCellY == keyCellY) {
+                    // O personagem está na mesma célula que a chave
                     jogo.getMapa().nroChaves++;
                     chave.setStatus(false);
-                        jogo.getMapa().getListaElementos().remove(chave);
-                        jogo.getMapa().getMapa().set(chave.getY() / jogo.getMapa().TAMANHO_CELULA,
-                                jogo.getMapa().getMapa().get(chave.getY() / jogo.getMapa().TAMANHO_CELULA).substring(0, chave.getX() / jogo.getMapa().TAMANHO_CELULA)
-                                        + " "
-                                        + jogo.getMapa().getMapa().get(chave.getY() / jogo.getMapa().TAMANHO_CELULA)
-                                                .substring(chave.getX() / jogo.getMapa().TAMANHO_CELULA + 1));
-                } 
-                jogo.getKeyBar().setText(jogo.desenhaBarraChaves());
+                    jogo.getMapa().removeElemento(chave);
+                }
 
+                jogo.getKeyBar().setText(jogo.desenhaBarraChaves());
                 jogo.repaint();
                 Thread.sleep(100); 
             } catch (InterruptedException e) {

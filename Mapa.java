@@ -11,8 +11,8 @@ public class Mapa {
     private List<String> mapa;
     private Map<Character, ElementoMapa> elementos;
     private List<ElementoMapa> listaElementos;
-    private int x = 50; 
-    private int y = 50; 
+    private int x; 
+    private int y; 
     public final int TAMANHO_CELULA = 10; 
     private boolean[][] areaRevelada; 
     private final Color redColor = new Color(225, 0, 0); 
@@ -201,12 +201,7 @@ public class Mapa {
             if(elemento instanceof Inimigo){
                 if (distancia <= RAIO_MORTE * TAMANHO_CELULA) {
                     elemento.reduzVidaInimigo();
-                    listaElementos.remove(elemento);
-                    mapa.set(elemento.getY() / TAMANHO_CELULA,
-                            mapa.get(elemento.getY() / TAMANHO_CELULA).substring(0, elemento.getX() / TAMANHO_CELULA)
-                                    + " "
-                                    + mapa.get(elemento.getY() / TAMANHO_CELULA)
-                                            .substring(elemento.getX() / TAMANHO_CELULA + 1));
+                    removeElemento(elemento);
                     return "Você matou o inimigo!";
                 }
             }
@@ -228,12 +223,7 @@ public class Mapa {
             if (distancia <= RAIO_MORTE * TAMANHO_CELULA) {
                 if(elemento instanceof Vida){
                     setVidaPersonagem(elemento.getQuantidadeVida());
-                    listaElementos.remove(elemento);
-                    mapa.set(elemento.getY() / TAMANHO_CELULA,
-                            mapa.get(elemento.getY() / TAMANHO_CELULA).substring(0, elemento.getX() / TAMANHO_CELULA)
-                                    + " "
-                                    + mapa.get(elemento.getY() / TAMANHO_CELULA)
-                                            .substring(elemento.getX() / TAMANHO_CELULA + 1));
+                    removeElemento(elemento);
                     return "Você ganhou 10 de vida!";
                 }
             }
@@ -258,7 +248,7 @@ public class Mapa {
         }
     }
 
-    // inicializacao dos inimigos
+    // inicializacao dos elementos
     private void inicializaElementos() {
         for (int i = 0; i < mapa.size(); i++) {
             String linha = mapa.get(i);
@@ -341,5 +331,38 @@ public class Mapa {
         }
 
         return false; 
+    }
+
+    private void atualizaMapa(int x, int y, char newChar) {
+        int cellX = x / TAMANHO_CELULA;
+        int cellY = y / TAMANHO_CELULA;
+
+        StringBuilder linha = new StringBuilder(mapa.get(cellY));
+        int startIndex = cellX * TAMANHO_CELULA;
+        int endIndex = startIndex + TAMANHO_CELULA;
+
+        // Garante que o caractere substituído mantenha o tamanho da célula
+        for (int i = startIndex; i < endIndex; i++) {
+            if (i >= linha.length()) {
+                linha.append(newChar);
+            } else {
+                linha.setCharAt(i, newChar);
+            }
+        }
+
+        mapa.set(cellY, linha.toString());
+    }
+
+    // Método para remover um elemento do mapa
+    public void removeElemento(ElementoMapa elemento) {
+        int x = elemento.getX();
+        int y = elemento.getY();
+        char newChar = ' '; // Caractere para substituir o elemento removido
+
+        // Atualiza a célula no mapa
+        atualizaMapa(x, y, newChar);
+
+        // Remove o elemento da lista de elementos
+        listaElementos.remove(elemento);
     }
 }
