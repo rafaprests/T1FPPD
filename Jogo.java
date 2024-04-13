@@ -223,12 +223,16 @@ public class Jogo extends JFrame implements KeyListener {
 
     public String desenhaBarraStatus() {
         StringBuilder s = new StringBuilder();
-        s.append("<html><font color=\"green\">");
+        s.append("<html><font color=\"red\">");
         for (int i = 0; i < mapa.getVidaMaxima(); i++) {
             if (i < mapa.getVidaPersonagem()) {
-                s.append("■");
+                // s.append("■");
+                s.append("♥");
+                
             } else {
-                s.append("□");
+                // s.append("□");
+                s.append("♡");
+                
             }
         }
         s.append("</font></html>");
