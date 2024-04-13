@@ -4,8 +4,8 @@ public class Inimigo implements ElementoMapa {
     private Color cor;
     private String simbolo;
     private int vida;
-    private int x;
-    private int y;
+    private double x;
+    private double y;
 
     public Inimigo(String simbolo, Color cor) {
         this.simbolo = simbolo;
@@ -13,19 +13,19 @@ public class Inimigo implements ElementoMapa {
         this.vida = 1;
     }
     
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
     

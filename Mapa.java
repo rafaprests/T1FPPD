@@ -11,8 +11,8 @@ public class Mapa {
     private List<String> mapa;
     private Map<Character, ElementoMapa> elementos;
     private List<ElementoMapa> listaElementos;
-    private int x;
-    private int y;
+    private double x;
+    private double y;
     public final int TAMANHO_CELULA = 10;
     private boolean[][] areaRevelada;
     private final Color redColor = new Color(225, 0, 0);
@@ -41,11 +41,11 @@ public class Mapa {
         return gameOn;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
@@ -145,7 +145,7 @@ public class Mapa {
         if (elemento instanceof Inimigo && elemento.getX() + dx == x && elemento.getY() + dy == y)
             return false;
 
-        if (!podeMover(elemento.getX() + dx, elemento.getY() + dy)) {
+        if (!podeMover(elemento.getX() + dx, elemento.getY() + 5 + dy)) {
             return false;
         }
 
@@ -156,9 +156,9 @@ public class Mapa {
         return true;
     }
 
-    public boolean podeMover(int nextX, int nextY) {
-        int mapX = nextX / TAMANHO_CELULA;
-        int mapY = nextY / TAMANHO_CELULA - 1;
+    public boolean podeMover(double nextX, double nextY) {
+        double mapX = nextX / TAMANHO_CELULA;
+        double mapY = nextY / TAMANHO_CELULA - 1;
 
         if (mapa == null)
             return false;
@@ -173,7 +173,7 @@ public class Mapa {
             char id;
 
             try {
-                id = mapa.get(mapY).charAt(mapX);
+                id = mapa.get((int)mapY).charAt((int)mapX);
             } catch (StringIndexOutOfBoundsException e) {
                 return false;
             }
@@ -196,8 +196,8 @@ public class Mapa {
 
         // Itera sobre cada inimigo para verificar a proximidade com o personagem
         for (ElementoMapa elemento : listaElementos) {
-            int distanciaX = Math.abs(x - elemento.getX());
-            int distanciaY = Math.abs(y - elemento.getY());
+            int distanciaX = Math.abs((int)x - (int)elemento.getX());
+            int distanciaY = Math.abs((int)y - (int)elemento.getY());
             double distancia = Math.sqrt(Math.pow(distanciaX, 2) + Math.pow(distanciaY, 2));
 
             // Verifica se a distância é menor ou igual ao raio de interação
@@ -218,8 +218,8 @@ public class Mapa {
 
         // Itera sobre cada elemento para verificar a proximidade com o personagem
         for (ElementoMapa elemento : listaElementos) {
-            int distanciaX = Math.abs(x - elemento.getX());
-            int distanciaY = Math.abs(y - elemento.getY());
+            int distanciaX = Math.abs((int)x - (int)elemento.getX());
+            int distanciaY = Math.abs((int)y - (int)elemento.getY());
             double distancia = Math.sqrt(Math.pow(distanciaX, 2) + Math.pow(distanciaY, 2));
 
             // Verifica se a distância é menor ou igual ao raio de interação
@@ -233,11 +233,11 @@ public class Mapa {
         }
 
         // Verifica se a porta está próxima ao jogador
-        int mapX = x / TAMANHO_CELULA;
-        int mapY = y / TAMANHO_CELULA;
+        double mapX = x / TAMANHO_CELULA;
+        double mapY = y / TAMANHO_CELULA;
 
-        for (int i = Math.max(0, mapY - RAIO_MORTE); i < Math.min(mapa.size(), mapY + RAIO_MORTE + 1); i++) {
-            for (int j = Math.max(0, mapX - RAIO_MORTE); j < Math.min(mapa.get(i).length(),
+        for (int i = Math.max((int)0, (int)mapY - RAIO_MORTE); i < Math.min(mapa.size(), mapY + RAIO_MORTE + 1); i++) {
+            for (int j = Math.max((int)0, (int)mapX - RAIO_MORTE); j < Math.min(mapa.get(i).length(),
                     mapX + RAIO_MORTE + 1); j++) {
                 char id = mapa.get(i).charAt(j);
                 if (id == 'D') {
@@ -288,7 +288,7 @@ public class Mapa {
                     // inicializa novo inimigo
                     Inimigo novoInimigo = new Inimigo("☠", redColor);
                     novoInimigo.setX(j * TAMANHO_CELULA);
-                    novoInimigo.setY(i * (TAMANHO_CELULA + 1));
+                    novoInimigo.setY(i * (TAMANHO_CELULA + 0.6));
                     listaElementos.add(novoInimigo);
                 }
                 if (id == 'C') {
@@ -298,7 +298,7 @@ public class Mapa {
                     // inicializa nova vida
                     Vida novaVida = new Vida("♥", blueColor);
                     novaVida.setX(j * TAMANHO_CELULA);
-                    novaVida.setY(i * (TAMANHO_CELULA + 1));
+                    novaVida.setY(i * (TAMANHO_CELULA + 0.6));
                     listaElementos.add(novaVida);
                 }
                 if (id == 'K') {
@@ -308,7 +308,7 @@ public class Mapa {
                     // inicializa nova chave
                     Chave novaChave = new Chave("⚷", goldColor);
                     novaChave.setX(j * TAMANHO_CELULA);
-                    novaChave.setY(i * (TAMANHO_CELULA + 1));
+                    novaChave.setY(i * (TAMANHO_CELULA + 0.6));
                     listaElementos.add(novaChave);
                 }
                 // substitui a linha que continha o caracter W pela linha do strinbuilder
@@ -320,9 +320,9 @@ public class Mapa {
     private void atualizaCelulasReveladas() {
         if (mapa == null)
             return;
-        for (int i = Math.max(0, y / TAMANHO_CELULA - RAIO_VISAO); i < Math.min(mapa.size(),
+        for (int i = Math.max((int)0, (int)y / TAMANHO_CELULA - RAIO_VISAO); i < Math.min(mapa.size(),
                 y / TAMANHO_CELULA + RAIO_VISAO + 1); i++) {
-            for (int j = Math.max(0, x / TAMANHO_CELULA - RAIO_VISAO); j < Math.min(mapa.get(i).length(),
+            for (int j = Math.max((int)0, (int)x / TAMANHO_CELULA - RAIO_VISAO); j < Math.min(mapa.get(i).length(),
                     x / TAMANHO_CELULA + RAIO_VISAO + 1); j++) {
                 areaRevelada[i][j] = true;
             }
@@ -344,10 +344,18 @@ public class Mapa {
     }
 
     public boolean personagemPerto(ElementoMapa elemento) {
-        int distanciaX = Math.abs(x - elemento.getX());
-        int distanciaY = Math.abs(y - elemento.getY());
+        int distanciaX = Math.abs((int)x - (int)elemento.getX());
+        int distanciaY = Math.abs((int)y - (int)elemento.getY());
         double distancia = Math.sqrt(Math.pow(distanciaX, 2) + Math.pow(distanciaY, 2));
 
+        if(elemento instanceof Chave){
+            if(distancia <= TAMANHO_CELULA){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
         // Verifica se a distância é menor ou igual ao raio de visão
         if (distancia <= RAIO_MORTE * TAMANHO_CELULA) {
             return true;
@@ -378,8 +386,8 @@ public class Mapa {
 
     // Método para remover um elemento do mapa
     public void removeElemento(ElementoMapa elemento) {
-        int x = elemento.getX();
-        int y = elemento.getY();
+        int x = (int)elemento.getX();
+        int y = (int)elemento.getY();
         char newChar = ' '; // Caractere para substituir o elemento removido
 
         // Atualiza a célula no mapa

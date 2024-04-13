@@ -33,25 +33,25 @@ public class Parede implements ElementoMapa {
     }
 
     @Override
-    public int getX() {
+    public double getX() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getX'");
     }
 
     @Override
-    public int getY() {
+    public double getY() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getY'");
     }
 
     @Override
-    public void setX(int x) {
+    public void setX(double x) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setX'");
     }
 
     @Override
-    public void setY(int y) {
+    public void setY(double y) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setY'");
     }

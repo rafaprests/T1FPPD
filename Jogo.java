@@ -99,9 +99,8 @@ public class Jogo extends JFrame implements KeyListener {
 
         // Adiciona o listener para eventos de teclado
         addKeyListener(this);
-
+        
         iniciarThreadsElementos();
-
     }
 
     public JLabel getKeyBar() {
@@ -160,7 +159,7 @@ public class Jogo extends JFrame implements KeyListener {
                         SwingUtilities.invokeLater(() -> {
                         // Exibe uma caixa de diálogo informando que o jogador ganhou
                         int escolha = JOptionPane.showConfirmDialog(this, "Você ganhou! Deseja reiniciar o jogo?", "Vitória", JOptionPane.YES_NO_OPTION);
-        
+                        
                         // Verifica a escolha do usuário
                         if (escolha == JOptionPane.YES_OPTION) {
                             reiniciarJogo();
@@ -247,14 +246,14 @@ public class Jogo extends JFrame implements KeyListener {
 
     private void desenhaPersonagem(Graphics g) {
         g.setColor(characterColor);
-        g.drawString("☺", mapa.getX(), mapa.getY());
+        g.drawString("☺", (int)mapa.getX(), (int)mapa.getY());
     }
 
     private void desenhaElementos(Graphics g) {
         for (int i = 0; i < mapa.getListaElementos().size(); i++) {
             g.setColor(mapa.getListaElementos().get(i).getCor());
-            g.drawString(mapa.getListaElementos().get(i).getSimbolo(), mapa.getListaElementos().get(i).getX(),
-                    mapa.getListaElementos().get(i).getY());
+            g.drawString(mapa.getListaElementos().get(i).getSimbolo(), (int)mapa.getListaElementos().get(i).getX(),
+                    (int)mapa.getListaElementos().get(i).getY());
         }
 
     }

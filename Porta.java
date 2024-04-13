@@ -3,9 +3,8 @@ import java.awt.Color;
 public class Porta implements ElementoMapa {
     private Color cor;
     private String simbolo;
-    private int x;
-    private int y;
-    private boolean status;
+    private double x;
+    private double y;
 
     public Porta(String simbolo, Color cor) {
         this.simbolo = simbolo;
@@ -23,22 +22,22 @@ public class Porta implements ElementoMapa {
     }
 
     @Override
-    public int getX(){
+    public double getX(){
         return x;
     }
 
     @Override
-    public int getY(){
+    public double getY(){
         return y;
     }
 
     @Override
-    public void setX(int x){
+    public void setX(double x){
         this.x = x;
     }
 
     @Override
-    public void setY(int y){
+    public void setY(double y){
         this.y = y;
     }
     
@@ -55,7 +54,6 @@ public class Porta implements ElementoMapa {
 
     @Override
     public String interage() {
-        this.simbolo = " ";
         return null;
     }
 

@@ -3,8 +3,8 @@ import java.awt.Color;
 public class Chave implements ElementoMapa {
     private Color cor;
     private String simbolo;
-    private int x;
-    private int y;
+    private double x;
+    private double y;
     private boolean status;
 
     public Chave(String simbolo, Color cor) {
@@ -13,19 +13,19 @@ public class Chave implements ElementoMapa {
         this.status = true;
     }
 
-    public int getX(){
+    public double getX(){
         return x;
     }
 
-    public int getY(){
+    public double getY(){
         return y;
     }
 
-    public void setX(int x){
+    public void setX(double x){
         this.x = x;
     }
 
-    public void setY(int y){
+    public void setY(double y){
         this.y = y;
     }
     
