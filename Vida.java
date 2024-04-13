@@ -79,16 +79,4 @@ public class Vida implements ElementoMapa {
             cor = corPisca;
         }
     }
-
-    @Override
-    public void reduzVidaInimigo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'reduzVidaInimigo'");
-    }
-
-    @Override
-    public int getVida() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getVida'");
-    }
 }

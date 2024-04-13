@@ -26,11 +26,7 @@ public interface ElementoMapa {
 
     int getQuantidadeVida();
 
-    void reduzVidaInimigo();
-
     boolean getStatus();
-
-    int getVida();
 
     void piscar();
 

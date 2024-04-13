@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Jogo extends JFrame implements KeyListener {
@@ -80,7 +81,7 @@ public class Jogo extends JFrame implements KeyListener {
         // Painel para botões e barra de status
         JPanel southPanel = new JPanel();
         JPanel ssPanel = new JPanel();
-        
+
         ssPanel.setLayout(new BoxLayout(ssPanel, BoxLayout.X_AXIS));
         ssPanel.add(statusBar);
         ssPanel.add(buttonPanel);
@@ -100,20 +101,20 @@ public class Jogo extends JFrame implements KeyListener {
         addKeyListener(this);
 
         iniciarThreadsElementos();
-        
+
     }
 
-    public JLabel getKeyBar(){
+    public JLabel getKeyBar() {
         return keyBar;
     }
 
-    public JLabel getStatusBar(){
+    public JLabel getStatusBar() {
         return statusBar;
     }
 
     // Método para iniciar as threads
     public void iniciarThreadsElementos() {
-        List<ElementoMapa> listaElementos = mapa.getListaElementos();
+        List<ElementoMapa> listaElementos = new ArrayList<>(mapa.getListaElementos());
 
         for (ElementoMapa elemento : listaElementos) {
             if (elemento instanceof Inimigo) {
@@ -136,6 +137,41 @@ public class Jogo extends JFrame implements KeyListener {
                 try {
                     // Atualiza a statusBar
                     SwingUtilities.invokeLater(() -> statusBar.setText(desenhaBarraStatus()));
+
+                    // Verifica se o personagem morreu
+                    if (mapa.getVidaPersonagem() <= 0) {
+                        SwingUtilities.invokeLater(() -> {
+                            // Exibe uma caixa de diálogo informando que o jogo acabou
+                            int escolha = JOptionPane.showConfirmDialog(this,
+                                    "Game Over - Personagem morreu! Deseja reiniciar o jogo?", "Game Over",
+                                    JOptionPane.YES_NO_OPTION);
+
+                            // Verifica a escolha do usuário
+                            if (escolha == JOptionPane.YES_OPTION) {
+                                reiniciarJogo();
+                            } else {
+                                // Fecha o jogo
+                                System.exit(0);
+                            }
+                        });
+                        break; // Sai do loop
+                    }
+                    if(!mapa.getGameOn()){
+                        SwingUtilities.invokeLater(() -> {
+                        // Exibe uma caixa de diálogo informando que o jogador ganhou
+                        int escolha = JOptionPane.showConfirmDialog(this, "Você ganhou! Deseja reiniciar o jogo?", "Vitória", JOptionPane.YES_NO_OPTION);
+        
+                        // Verifica a escolha do usuário
+                        if (escolha == JOptionPane.YES_OPTION) {
+                            reiniciarJogo();
+                        } else {
+                            // Fecha o jogo
+                            System.exit(0);
+                        }
+                    });
+                    break; // Sai do loop
+                }
+
                     Thread.sleep(100); // Aguarda 100 milissegundos
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -143,6 +179,15 @@ public class Jogo extends JFrame implements KeyListener {
             }
         });
         threadStatus.start();
+    }
+
+    public void reiniciarJogo() {
+        // Reinicia o jogo
+        SwingUtilities.invokeLater(() -> {
+            Jogo jogo = new Jogo("mapa.txt");
+            jogo.setVisible(true);
+            dispose(); // Fecha a janela atual do jogo
+        });
     }
 
     public void move(Direcao direcao) {
@@ -205,7 +250,6 @@ public class Jogo extends JFrame implements KeyListener {
         g.drawString("☺", mapa.getX(), mapa.getY());
     }
 
-   
     private void desenhaElementos(Graphics g) {
         for (int i = 0; i < mapa.getListaElementos().size(); i++) {
             g.setColor(mapa.getListaElementos().get(i).getCor());

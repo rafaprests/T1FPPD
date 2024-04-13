@@ -72,18 +72,6 @@ public class Chave implements ElementoMapa {
     }
 
     @Override
-    public void reduzVidaInimigo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'reduzVidaInimigo'");
-    }
-
-    @Override
-    public int getVida() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getVida'");
-    }
-
-    @Override
     public void piscar() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'piscar'");

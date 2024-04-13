@@ -1,21 +1,47 @@
 import java.awt.Color;
 
-public class Parede implements ElementoMapa {
+public class Porta implements ElementoMapa {
     private Color cor;
     private String simbolo;
+    private int x;
+    private int y;
+    private boolean status;
 
-    public Parede(String simbolo, Color cor) {
+    public Porta(String simbolo, Color cor) {
         this.simbolo = simbolo;
         this.cor = cor;
     }
     
+    @Override
     public String getSimbolo() {
         return simbolo;
     }
-
+    
+    @Override
     public Color getCor() {
         return cor;
     }
+
+    @Override
+    public int getX(){
+        return x;
+    }
+
+    @Override
+    public int getY(){
+        return y;
+    }
+
+    @Override
+    public void setX(int x){
+        this.x = x;
+    }
+
+    @Override
+    public void setY(int y){
+        this.y = y;
+    }
+    
 
     @Override
     public boolean podeSerAtravessado() {
@@ -24,36 +50,13 @@ public class Parede implements ElementoMapa {
 
     @Override
     public boolean podeInteragir() {
-        return false;
+        return true;
     }
 
     @Override
     public String interage() {
+        this.simbolo = " ";
         return null;
-    }
-
-    @Override
-    public int getX() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getX'");
-    }
-
-    @Override
-    public int getY() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getY'");
-    }
-
-    @Override
-    public void setX(int x) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setX'");
-    }
-
-    @Override
-    public void setY(int y) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setY'");
     }
 
     @Override

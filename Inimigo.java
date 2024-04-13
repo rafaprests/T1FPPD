@@ -49,21 +49,13 @@ public class Inimigo implements ElementoMapa {
 
     @Override
     public String interage() {
-        return "";
-    }
-    
-    public int getVida() {
-        return vida;
-    }
-
-    public void reduzVidaInimigo(){
         vida -= 1;
+        return "Matou inimigo!";
     }
 
     @Override
     public int getQuantidadeVida() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getQuantidadeVida'");
+        return vida;
     }
 
     @Override

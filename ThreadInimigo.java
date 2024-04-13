@@ -11,7 +11,7 @@ public class ThreadInimigo extends Thread {
 
     @Override
     public void run() {
-        while (this.inimigo.getVida() > 0) {
+        while (this.inimigo.getQuantidadeVida() > 0) {
             try {
                 Random rand = new Random();
                 Direcao direcaoAleatoria = Direcao.values()[rand.nextInt(Direcao.values().length)];
