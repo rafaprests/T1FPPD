@@ -156,8 +156,15 @@ public class Mapa {
         int mapX = nextX / TAMANHO_CELULA;
         int mapY = nextY / TAMANHO_CELULA - 1;
 
+
         if (mapa == null)
             return false;
+        
+        for(int i = 0; i < listaElementos.size(); i++){
+            if(nextX == listaElementos.get(i).getX() && nextY == listaElementos.get(i).getY()){
+                return listaElementos.get(i).podeSerAtravessado();
+            }
+        }
 
         if (mapX >= 0 && mapX < mapa.get(0).length() && mapY >= 1 && mapY <= mapa.size()) {
             char id;
@@ -218,15 +225,16 @@ public class Mapa {
 
             // Verifica se a distância é menor ou igual ao raio de interação
             if (distancia <= RAIO_MORTE * TAMANHO_CELULA) {
-                setVidaPersonagem(elemento.getQuantidadeVida());
-                listaElementos.remove(elemento);
-                mapa.set(elemento.getY() / TAMANHO_CELULA,
-                        mapa.get(elemento.getY() / TAMANHO_CELULA).substring(0, elemento.getX() / TAMANHO_CELULA)
-                                + " "
-                                + mapa.get(elemento.getY() / TAMANHO_CELULA)
-                                        .substring(elemento.getX() / TAMANHO_CELULA + 1));
-                return "Você ganhou 10 de vida!";
-
+                if(elemento instanceof Vida){
+                    setVidaPersonagem(elemento.getQuantidadeVida());
+                    listaElementos.remove(elemento);
+                    mapa.set(elemento.getY() / TAMANHO_CELULA,
+                            mapa.get(elemento.getY() / TAMANHO_CELULA).substring(0, elemento.getX() / TAMANHO_CELULA)
+                                    + " "
+                                    + mapa.get(elemento.getY() / TAMANHO_CELULA)
+                                            .substring(elemento.getX() / TAMANHO_CELULA + 1));
+                    return "Você ganhou 10 de vida!";
+                }
             }
         }
         return "Nada interativo por aqui...";
@@ -266,7 +274,7 @@ public class Mapa {
                     //inicializa novo inimigo
                     Inimigo novoInimigo = new Inimigo("O", redColor);
                     novoInimigo.setX(j * TAMANHO_CELULA);
-                    novoInimigo.setY(i * TAMANHO_CELULA);
+                    novoInimigo.setY(i * (TAMANHO_CELULA + 1));
                     listaElementos.add(novoInimigo);
                 }
                 if(id == 'C'){
@@ -276,7 +284,7 @@ public class Mapa {
                     //inicializa nova vida
                     Vida novaVida = new Vida("+", blueColor);
                     novaVida.setX(j * TAMANHO_CELULA);
-                    novaVida.setY(i * TAMANHO_CELULA);
+                    novaVida.setY(i * (TAMANHO_CELULA + 1));
                     listaElementos.add(novaVida);
                 }
                 if(id == 'K'){
@@ -286,7 +294,7 @@ public class Mapa {
                     //inicializa nova vida
                     Chave novaChave = new Chave("$", goldColor);
                     novaChave.setX(j * TAMANHO_CELULA);
-                    novaChave.setY(i * TAMANHO_CELULA);
+                    novaChave.setY(i * (TAMANHO_CELULA + 1));
                     listaElementos.add(novaChave);
                 }
                 //substitui a linha que continha o caracter W pela linha do strinbuilder

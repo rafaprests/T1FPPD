@@ -16,13 +16,13 @@ public class ThreadInimigo extends Thread {
                 Random rand = new Random();
                 Direcao direcaoAleatoria = Direcao.values()[rand.nextInt(Direcao.values().length)];
                 
-                if(jogo.getMapa().moveElemento(direcaoAleatoria, inimigo))
+                jogo.getMapa().moveElemento(direcaoAleatoria, inimigo);
 
                 if(jogo.getMapa().personagemPerto(inimigo)){
                     jogo.getMapa().reduzVidaPersonagem(1);                    
                 }
                 jogo.repaint();
-                Thread.sleep(100); 
+                Thread.sleep(500); 
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

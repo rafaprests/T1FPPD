@@ -87,6 +87,8 @@ public class Jogo extends JFrame implements KeyListener {
 
         // Adiciona o listener para eventos de teclado
         addKeyListener(this);
+
+        iniciarThreadsElementos();;
     }
 
     // Método para iniciar as threads
@@ -241,7 +243,7 @@ public class Jogo extends JFrame implements KeyListener {
         SwingUtilities.invokeLater(() -> {
             Jogo jogo = new Jogo("mapa.txt");
             jogo.setVisible(true);
-            jogo.iniciarThreadsElementos();
+            //jogo.iniciarThreadsElementos();
         });
     }
 }
