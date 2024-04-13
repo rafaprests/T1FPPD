@@ -183,7 +183,7 @@ public class Jogo extends JFrame implements KeyListener {
     public void reiniciarJogo() {
         // Reinicia o jogo
         SwingUtilities.invokeLater(() -> {
-            Jogo jogo = new Jogo("mapa.txt");
+            Jogo jogo = new Jogo("mapa2.txt");
             jogo.setVisible(true);
             dispose(); // Fecha a janela atual do jogo
         });
