@@ -43,7 +43,7 @@ public class Jogo extends JFrame implements KeyListener {
         JButton btnRight = new JButton("Direita (D)");
         JButton btnLeft = new JButton("Esquerda (A)");
         JButton btnInterect = new JButton("Ataca (E)");
-        JButton btnAttack = new JButton("Ação Secundária (J)");
+        JButton btnAttack = new JButton("Interage (R)");
 
         // Evita que os botões recebam o foco e interceptem os eventos de teclado
         btnUp.setFocusable(false);
@@ -283,7 +283,7 @@ public class Jogo extends JFrame implements KeyListener {
             case KeyEvent.VK_E: // Tecla 'E' para atacar
                 ataca();
                 break;
-            case KeyEvent.VK_J: // Tecla 'J' para ação secundária
+            case KeyEvent.VK_R: // Tecla 'J' para ação secundária
                 interage();
                 break;
         }
